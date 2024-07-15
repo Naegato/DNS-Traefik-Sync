@@ -3,7 +3,7 @@ import paramiko
 import ctypes
 import sys
 from dotenv import load_dotenv
-
+import socket
 
 def is_admin():
     try:
@@ -81,13 +81,18 @@ def main():
     load_dotenv(dotenv_path=f"{dir_name}/.env.local")
     load_dotenv(dotenv_path=f"{dir_name}/.env")
 
-    ip_address = os.getenv("IP_ADDRESS")
     username = os.getenv("USERNAME")
     ssh_port = os.getenv("SSH_PORT")
     working_directory = os.getenv("WORK_DIR")
     url_regex = os.getenv("URL_REGEX")
     hosts_file = os.getenv("HOSTS_FILE")
     hosts_delimiter = os.getenv("HOSTS_DELIMITER")
+    domain = os.getenv("DOMAIN")
+
+    ip_address = os.getenv("IP_ADDRESS")
+
+    if domain:
+        ip_address = socket.gethostbyname(domain);
 
     if (not ip_address or not username or not ssh_port or not working_directory
             or not url_regex or not hosts_file or not hosts_delimiter):
